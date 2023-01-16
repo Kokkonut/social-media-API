@@ -1,26 +1,73 @@
 const { Schema, model } = require('mongoose');
+const { Thoughts } = require('.');
 
-// Schema to create Post model
+//reaction Schema(child)
+const reactionSchema = new Schema(
+  {
+    //set custom id to avoid confusion with parent thought _id
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId()
+    },
+    reactionBody: {
+      type: String,
+      required: true,
+      maxlength: 280
+    },
+    username: {
+      type: String,
+      required: true
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: createdAtVal => dateFormat(createdAtVal)
+    }
+  },
+  {
+    toJSON: {
+      getters: true
+    }
+  }
+);
+
+//Thought schema (parent)
 const thoughtSchema = new Schema(
   {
-    text: String,
-    username: String,
-    comments: [{ type: Schema.Types.ObjectId, ref: 'comment' }],
+    thoughtText: { 
+      type: String,
+      required: true,
+      minlength: 1,
+      maxlength: 280
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: createdAtVal => dateFormat(createdAtVal)
+    },
+    username: {
+      type: String,
+      required: true
+    },
+    reactions: [reactionSchema]
   },
   {
     toJSON: {
       virtuals: true,
+      getters: true
     },
-    id: false,
+    id: false
   }
 );
 
-// Create a virtual property `commentCount` that gets the amount of comments per post
-postSchema.virtual('commentCount').get(function () {
-  return this.comments.length;
+// //get total count of reactions on retrieval
+thoughtSchema.virtual('reactionCount').get(function() {
+  return this.reactions.length;
 });
 
-// Initialize our Post model
-const Thought = model('thougt', thoughtSchema);
+// //create the Thought model using the thoughtSchema
+const Thoughts = model('Thought', thoughtSchema);
 
-module.exports = Thought;
+//export the Thought model
+module.exports = Thoughts;
+
