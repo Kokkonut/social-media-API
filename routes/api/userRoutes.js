@@ -3,10 +3,11 @@ const {
   getSinglePost,
   getPosts,
   createPost,
-} = require('../../controllers/postController');
+} = require('../../controllers/userController');
 
 router.route('/').get(getPosts).post(createPost);
 
 router.route('/:postId').get(getSinglePost);
 
 module.exports = router;
+ 
