@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 // Schema to create Post model
-const postSchema = new Schema(
+const thoughtSchema = new Schema(
   {
     text: String,
     username: String,
@@ -21,6 +21,6 @@ postSchema.virtual('commentCount').get(function () {
 });
 
 // Initialize our Post model
-const Post = model('post', postSchema);
+const Thought = model('thougt', thoughtSchema);
 
-module.exports = Post;
+module.exports = Thought;
