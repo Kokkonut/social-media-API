@@ -105,6 +105,46 @@ async updatePost({ params, body }, res) {
     res.status(500).json(err);
   }
 },
-  
+
+// add a reaction to a post async/await
+async addReaction({ params, body }, res) {
+  try {
+    console.log(body);
+    const postData = await Thought.findOneAndUpdate(
+      { _id: params.id },
+      { $addToSet: { reactions: body } },
+      { new: true, runValidators: true }
+    );
+    if (!postData) {
+      res.status(404).json({ message: 'No post found with this id!' });
+      return;
+    }
+    res.status(200).json(postData);
+  }
+  catch (err) {
+    res.status(500).json(err);
+    console.log(err);
+  }
+},
+
+// remove a reaction from a post async/await
+async removeReaction({ params }, res) {
+  try {
+    const postData = await Thought.findOneAndUpdate(
+      { _id: params.id },
+      { $pull: { reactions: { reactionId: params.reactionId } } },
+      { new: true }
+    );
+    if (!postData) {
+      res.status(404).json({ message: 'No post found with this id!' });
+      return;
+    }
+    res.status(200).json(postData);
+  }
+  catch (err) {
+    res.status(500).json(err);
+  }
+},
+
 };
 
