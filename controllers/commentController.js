@@ -1,5 +1,4 @@
 const { Thought } = require('../models');
-const { User } = require('../models');
 
 module.exports = {
   // Get all posts async/await
@@ -10,10 +9,6 @@ module.exports = {
           path: 'reactions',
           select: '-__v',
         })
-        .populate({
-          path: 'thoughts',
-          select: '-__v'
-        });
       res.status(200).json(postData);
     } catch (err) {
       res.status(500).json(err);
@@ -27,7 +22,7 @@ module.exports = {
     try {
       const postData = await Thought.findOne({ _id: req.params.id })
         .populate({
-          path: 'comments',
+          path: 'reactions',
           select: '-__v',
         })
         .select('-__v');
