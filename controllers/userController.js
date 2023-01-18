@@ -106,7 +106,7 @@ module.exports = {
   async removeFriend({ params }, res) {
     try {
       const userData = await User.findOneAndUpdate(
-        { _id: params.userId },
+        { _id: params.id },
         { $pull: { friends: params.friendId } },
         { new: true, runValidators: true }
       );
