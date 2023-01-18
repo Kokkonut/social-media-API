@@ -1,22 +1,14 @@
 const { User } = require('../models');
+const { Thought } = require('../models');
 
 module.exports = {
   // Get all users async/await
   async getUsers(req, res) {
     try {
-      const userData = await User.find({})
-        .populate({
-          path: 'thoughts',
-          select: '-__v',
-        })
-        .populate({
-          path: 'friends',
-          select: '-__v',
-        })
-        .select('-__v');
-      res.status(200).json(userData);
+      const users = await User.find();
+      res.json(users);
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json({ message: err.message });
     }
   },
 
@@ -25,10 +17,10 @@ module.exports = {
   async getUserById(req, res) {
     try {
       const userData = await User.findOne({ _id: req.params.id })
-        .populate({
-          path: 'thoughts',
-          select: '-__v',
-        })
+        // .populate({
+        //   path: 'thoughts',
+        //   select: '-__v',
+        // })
         .populate({ 
           path: 'friends',
           select: '-__v',

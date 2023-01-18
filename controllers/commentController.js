@@ -7,15 +7,19 @@ module.exports = {
     try {
       const postData = await Thought.find({})
         .populate({
-          path: 'comments',
+          path: 'reactions',
           select: '-__v',
         })
-        .select('-__v');
+        .populate({
+          path: 'thoughts',
+          select: '-__v'
+        });
       res.status(200).json(postData);
     } catch (err) {
       res.status(500).json(err);
     }
   },
+
 
   // Get a single post by id async/await
   async getSingleComment(req, res) {
