@@ -10,6 +10,6 @@ const {
 router.route('/').get(getComments).post(createComment).delete(deleteComment);
 
 // /api/comments/:commentId
-router.route('/:commentId').get(getSingleComment);
+router.route('/:id').get(getSingleComment);
 
 module.exports = router;
