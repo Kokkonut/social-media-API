@@ -21,27 +21,6 @@ module.exports = {
   },
 
 
-  // Get a single student
-  getSingleStudent(req, res) {
-    Student.findOne({ _id: req.params.studentId })
-      .select('-__v')
-      .then(async (student) =>
-        !student
-          ? res.status(404).json({ message: 'No student with that ID' })
-          : res.json({
-              student,
-              grade: await grade(req.params.studentId),
-            })
-      )
-      .catch((err) => {
-        console.log(err);
-        return res.status(500).json(err);
-      });
-  },
-
-
-
-
   // Get a single user by id async/await
   async getUserById(req, res) {
     try {
@@ -107,9 +86,10 @@ module.exports = {
   },
   // Add a friend to a user's friend list async/await
   async addFriend({ params }, res) {
+    console.log(params)
     try {
       const userData = await User.findOneAndUpdate(
-        { _id: params.userId },
+        { _id: params.id },
         { $addToSet: { friends: params.friendId } },
         { new: true, runValidators: true }
       );
