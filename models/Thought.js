@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { User } = require('.');
+const { User } = require('./User');
 
 //reaction Schema(child)
 const reactionSchema = new Schema(

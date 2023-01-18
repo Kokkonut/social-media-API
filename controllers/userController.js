@@ -17,10 +17,10 @@ module.exports = {
   async getUserById(req, res) {
     try {
       const userData = await User.findOne({ _id: req.params.id })
-        // .populate({
-        //   path: 'thoughts',
-        //   select: '-__v',
-        // })
+        .populate({
+          path: 'thoughts',
+          select: '-__v',
+        })
         .populate({ 
           path: 'friends',
           select: '-__v',
