@@ -4,12 +4,13 @@ const {
   getSingleComment,
   createComment,
   deleteComment,
+  updatePost,
 } = require('../../controllers/commentController');
 
 // /api/comments
-router.route('/').get(getComments).post(createComment).delete(deleteComment);
+router.route('/').get(getComments).post(createComment);
 
 // /api/comments/:commentId
-router.route('/:id').get(getSingleComment);
+router.route('/:id').get(getSingleComment).delete(deleteComment).put(updatePost);
 
 module.exports = router;
