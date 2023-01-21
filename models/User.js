@@ -1,4 +1,6 @@
 const { Schema, model } = require('mongoose');
+//import thought model
+const Thought = require('./Thought');
 
 
 //create a schema for the user
@@ -33,7 +35,7 @@ const userSchema = new Schema({
 {
   toJSON: {
     virtuals: true,
-    // getters: true
+    getters: true
   },
   id: false,
 });
@@ -45,7 +47,7 @@ userSchema.virtual('friendCount').get(function() {
 
 userSchema.pre('remove', async function(next) {
   // Find and remove all thoughts created by this user
-  await Thought.deleteMany({'user': this._id});
+  await Thought.deleteMany({'userId': this._id});
   next();
 });
 
