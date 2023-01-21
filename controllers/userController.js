@@ -83,17 +83,22 @@ module.exports = {
   // Delete a user by id also delete thoughts and reactions
   async removeUser({ params }, res) {
     try {
-      const userData = await User.findOneAndRemove({ _id: params.id });
+      const userData = await User.findByIdAndDelete({ _id: params.id });
       console.log(`userData: ${userData}`)
       if (!userData) {
         res.status(404).json({ message: 'No user found with this id!' });
-        return;
+      
       }
+
+      await Thought.deleteMany({ _id: { $in: userData.thoughts } });
+
       res.status(200).json(userData);
     } catch (err) {
       res.status(500).json(err);
     }
   },
+
+
 
   // Add a friend to a user's friend
   async addFriend({ params }, res) {
