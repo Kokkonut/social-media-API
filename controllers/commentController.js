@@ -1,4 +1,4 @@
-const { Thought } = require('../models');
+const { Thought, User } = require('../models');
 
 module.exports = {
   // Get all posts async/await
@@ -50,7 +50,7 @@ module.exports = {
             res.status(404).json({ message: "No User with this ID" });
             return;
         }
-        res.json(dbUserData);
+        res.json(`post created: ${thoughtData}`);
     } catch (err) {
         res.json(err);
     }

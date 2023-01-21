@@ -19,7 +19,6 @@ const userSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'Thought',
-      strict: false
     }
   ],
   friends: [
@@ -28,11 +27,13 @@ const userSchema = new Schema({
       ref: 'User'
     }
   ]
+  
+
 },
 {
   toJSON: {
     virtuals: true,
-    getters: true
+    // getters: true
   },
   id: false,
 });
@@ -41,6 +42,13 @@ const userSchema = new Schema({
 userSchema.virtual('friendCount').get(function() {
   return this.friends.length;
 });
+
+userSchema.pre('remove', async function(next) {
+  // Find and remove all thoughts created by this user
+  await Thought.deleteMany({'user': this._id});
+  next();
+});
+
 
 //create the User model using the userSchema
 const User = model('User', userSchema);
